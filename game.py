@@ -28,7 +28,7 @@ def get_board_moves(board, player):
     moves = []
     playerPosition = []
 
-    if (player == 'player'):
+    if player == 'player':
         playerPosition = get_position(board, 'player')
         playerMark = 1
         opponent = 'bot'
@@ -59,15 +59,20 @@ def clearConsole():
 
 # This function prints the board
 def print_board(board):
+    print('   ', end='')
+    for j in range(k):
+                print(j + 1, end='  ')
+    print()
     for i in range(k):
+        print(i + 1, end=' ')
         for j in range(k):
-            if (board[i][j] == 0):
+            if board[i][j] == 0:
                 print(" _ ", end='')
-            if (board[i][j] == -1):
+            if board[i][j] == -1:
                 print(" X ", end='')
-            if (board[i][j] == 1):
+            if board[i][j] == 1:
                 print(" P ", end='')
-            if (board[i][j] == 2):
+            if board[i][j] == 2:
                 print(" B ", end='')
 
         print("\n")
@@ -75,7 +80,7 @@ def print_board(board):
 
 # Returns if a move is valid
 def is_valid_move(board, x, y):
-    if (x < 0 or x >= k or y < 0 or y >= k or board[x][y] != 0):
+    if x < 0 or x >= k or y < 0 or y >= k or board[x][y] != 0:
         return False
     return True
 
@@ -86,15 +91,15 @@ def get_moves(currentBoard, player):
     move = []
     for i in range(k):
         for j in range(k):
-            if (player == 'player'):
-                if (currentBoard[i][j] == 1):
+            if player == 'player':
+                if currentBoard[i][j] == 1:
                     playerPosition = [i, j]
             else:
-                if (currentBoard[i][j] == 2):
+                if currentBoard[i][j] == 2:
                     playerPosition = [i, j]
 
     for (x, y) in trans:
-        if (is_valid_move(currentBoard, playerPosition[0] + x, playerPosition[1] + y)):
+        if is_valid_move(currentBoard, playerPosition[0] + x, playerPosition[1] + y):
             move.append((playerPosition[0] + x, playerPosition[1] + y))
 
     return move
@@ -102,9 +107,9 @@ def get_moves(currentBoard, player):
 
 # evaluates the board
 def evaluate_board(board):
-    if (len(get_moves(board, 'player')) == 0):
+    if len(get_moves(board, 'player')) == 0:
         return -1
-    if (len(get_moves(board, 'bot')) == 0):
+    if len(get_moves(board, 'bot')) == 0:
         return 1
     return 0
 
@@ -114,34 +119,34 @@ def player_move(board):
     # gets the current location of the player
     for i in range(k):
         for j in range(k):
-            if (board[i][j] == 1):
+            if board[i][j] == 1:
                 playerPosition = [i, j]
 
-    newX = 100;
+    newX = 100
     newY = 100
 
     # move
     while (newX < 0 or newX >= k or newY < 0 or newY >= k or board[newX][newY] != 0):
         print("Please give the x coordinate of the field where you want to move: ", end='')
-        newX = int(input())
+        newX = int(str(input()))
         newX = newX - 1
         print("Please give the y coordinate of the field where you want to move: ", end='')
-        newY = int(input())
+        newY = int(str(input()))
         newY = newY - 1
 
     board[playerPosition[0]][playerPosition[1]] = 0
     board[newX][newY] = 1
 
-    newX = 100;
+    newX = 100
     newY = 100
 
     # block
     while (newX < 0 or newX >= k or newY < 0 or newY >= k or board[newX][newY] != 0):
         print("Please give the x coordinate of the field where you want to block: ", end='')
-        newX = int(input())
+        newX = int(str(input()))
         newX = newX - 1
         print("Please give the y coordinate of the field where you want to block: ", end='')
-        newY = int(input())
+        newY = int(str(input()))
         newY = newY - 1
 
     board[newX][newY] = -1
@@ -160,7 +165,7 @@ def heuristic_eval(board):
 def minimax(board, isMax, depth, alfa, beta):
     # maxEval = evaluate_board(board)
     maxEval = heuristic_eval(board)
-    if (depth == 0):
+    if depth == 0:
         return maxEval
 
     depth = depth - 1
@@ -204,7 +209,7 @@ def bot_move(board):
 # changes the player
 def change_player():
     global currentPlayer
-    if (currentPlayer == 1):
+    if currentPlayer == 1:
         currentPlayer = 2
     else:
         currentPlayer = 1
@@ -221,13 +226,13 @@ def play(board):
 
         state = evaluate_board(board)
 
-        if (state == -1):
+        if state == -1:
             break
 
-        if (state == 1):
+        if state == 1:
             break
 
-        if (currentPlayer == 2):
+        if currentPlayer == 2:
             board = player_move(board)
         else:
             board = bot_move(board)
@@ -235,14 +240,14 @@ def play(board):
         print_board(board)
         change_player()
 
-        if (steps == 4):
+        if steps == 4:
             depth = depth + 1
             steps = 0
 
 
 # places the players on their starting positions
 def place_players(mode, board):
-    if (mode == 2):
+    if mode == 2:
         board[0][int(k / 2)] = 2  # Bot
         board[k - 1][int(k / 2)] = 1  # Player
     else:
@@ -264,7 +269,7 @@ def create_board(mode):
 # sets the first players turn
 def set_first_player(mode):
     global currentPlayer
-    if (mode == 1):
+    if mode == 1:
         currentPlayer = 2  # player starts
     else:
         currentPlayer = 1  # bot starts
@@ -281,7 +286,7 @@ def start_game():
         print("Please select a game mode: \n")
         print(" Type 1 if you want the player to start")
         print(" Type 2 if you want the bot to start\n")
-        mode = int(input("Please enter your choice: "))
+        mode = int(str(input("Please enter your choice: ")))
 
     set_first_player(mode)
 
